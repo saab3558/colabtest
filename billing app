@@ -1,0 +1,62 @@
+
+import matplotlib.pyplot as plt  # 匯入 matplotlib.pyplot 模組
+
+class Account:
+    def __init__(self):
+        self.records = []  # 初始化記錄清單
+
+    def add_record(self, date, category, amount):
+        self.records.append((date, category, amount))  # 將記錄加入清單
+
+    def visualize_data(self):
+        categories = []  # 建立類別清單
+        amounts = []  # 建立金額清單
+
+        for record in self.records:
+            if record[1] not in categories:  # 如果類別尚未在清單中
+                categories.append(record[1])  # 將類別加入清單
+                amounts.append(record[2])  # 將金額加入清單
+            else:
+                index = categories.index(record[1])  # 取得類別在清單中的索引
+                amounts[index] += record[2]  # 將金額加到對應類別的金額
+
+        plt.pie(amounts, labels=categories, autopct='%1.1f%%')  # 繪製圓餅圖
+        plt.axis('equal')  # 設定圖形比例為相等
+        plt.title('收入與支出比例')  # 設定圖形標題
+        plt.show()  # 顯示圖形
+
+
+
+def main():
+    account = Account()  # 建立 Account 物件
+
+    while True:
+        print("===== 記帳程式 =====")
+        print("1. 新增消費記錄")
+        print("2. 顯示所有消費記錄")
+        print("3. 圖表視覺化")
+        print("0. 結束程式")
+        choice = input("請選擇您想要的功能：")  # 讀取使用者輸入的選項
+
+
+        if choice == "1":  # 如果選擇 1
+            account.add_record(*input("請輸入消費日期、類別和金額（以空格分隔(類別因無安裝中文模組 僅限於打英文)）：").split())  # 讀取日期、類別和金額，並呼叫 add_record 方法新增記錄
+            print("記錄已新增！")
+
+        elif choice == "2":  # 如果選擇 2
+            print("所有記錄：")
+            for record in account.records:
+                print(f"日期: {record[0]}, 類別: {record[1]}, 金額: {record[2]}")  # 顯示每筆記錄的日期、類別和金額
+
+        elif choice == "3":  # 如果選擇 3
+            account.visualize_data()  # 呼叫 visualize_data 方法顯示圖表
+
+        elif choice == "0":  # 如果選擇 0
+            print("程式已結束。")
+            break
+
+        else:
+            print
+if __name__ == '__main__':
+    main()
+
